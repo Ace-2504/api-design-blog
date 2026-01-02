@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta property="og:image" content="https://ace-2504.github.io/api-design-blog/blogapithumbnail.png" />
   <title>How Structured Thinking Fixed My API Design</title>
     <style>
 * {
@@ -706,9 +707,6 @@ Extracting this logic into a single middleware function addressed both concerns 
   </div>
 </div>
 
-<div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 20px 0;">
-  <p><strong>Key Transformation:</strong> From N implementations (one per route) to 1 implementation (single middleware). From scattered security checks to centralized authorization. From implicit relationships to explicit URL structure. This is the concrete manifestation of structured thinking converted into code.</p>
-</div>
 <p><strong>Measuring the Transformation</strong></p>
 
 <p>The middleware pattern sounds elegant in theory, but what concrete improvements does it deliver? Moving from scattered authorization checks to centralized middleware created measurable changes across multiple dimensions—from lines of code to developer experience. The table below breaks down exactly what shifted in the codebase, quantifying the benefits that the MECE framework, the Prioritization Matrix and the SMART framework predicted.</p>
@@ -759,9 +757,11 @@ Extracting this logic into a single middleware function addressed both concerns 
 </tr>
 </tbody>
 </table>
+<div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
+  <p><strong>Key Transformation:</strong> From N implementations (one per route) to 1 implementation (single middleware). From scattered security checks to centralized authorization. From implicit relationships to explicit URL structure. This is the concrete manifestation of structured thinking converted into code.</p>
+</div>
 
 
-<br>
 
 <hr style="border: none; height: 2px; background: #3498db; margin: 20px 0;">
 
@@ -773,32 +773,15 @@ This learning experience began with exploring challenges in API route organizati
 
 <p>The probable value extends beyond cleaner code—it represents learning a problem-solving methodology that could potentially transfer to other technical challenges. When facing complexity or uncertainty about where to start, structured frameworks may help transform vague concerns into concrete, actionable steps.</p>
 
-<div style="display: flex; gap: 30px; margin: 30px 0;">
-  <div style="flex: 0 0 48%; padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
-    <p><strong>Key Learnings</strong></p>
-    <p><strong>1. Systematic Thinking May Contribute to Better
-    Architecture</strong></p>
-    <p>Structured frameworks potentially encourage systematic thinking before building. By identifying probable overlaps and gaps early, one might avoid extensive refactoring later. This could represent the difference between reactive fixes and proactive design. When applying MECE analysis upfront, problems may reveal themselves before they become more challenging to address.</p>
-    <p><strong>2. Thoughtful Design May Save Time Over the Long Term</strong></p>
-    <p>The initial implementation required new security code for each feature, whereas the revised version allowed features to potentially inherit existing patterns. The initial investment in architecture appeared to yield benefits with each new feature added—one possible interpretation being compound interest in software design. Resource-based routing may allow new endpoints to follow established patterns more automatically. This principle could potentially apply to database schemas, error handling, or any system where upfront structural consideration might reduce repetitive work.</p>
-    <p><strong>3. Structure May Help Reinforce Security</strong></p>
-    <p>When authorization is incorporated into system structure, it potentially becomes less dependent on manual implementation for each route. The middleware approach may enforce it more consistently. Security could become more implicit in the design rather than dependent on developer memory. This appears to connect to the principle of centralizing cross-cutting concerns—security need not be scattered; it could be architectural.</p>
-    <p><strong>4. URLs May Communicate Structure</strong></p>
-    <p>Earlier routes primarily indicated actions to perform, whereas restructured routes potentially convey system relationships. They may become more self-documenting. In light of this approach, the structure itself could communicate intent without necessarily requiring separate documentation. When relationships are visible in API structure, developers might better understand the domain model through the endpoints themselves.</p>
-  </div>
-  <div style="flex: 0 0 48%; padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
-    <p><strong>Key Takeaways</strong></p>
-    <p id="takeaway-1"><strong>1. Consider Organizing Around Resources Rather Than Actions</strong></p>
-    <p>Organizing around what the system manages, rather than what users do, could potentially create more predictable, self-documenting interfaces. Action-based routes like <strong>/deleteBook</strong> may scale less effectively—resource-based routes like <strong>DELETE /books/:id</strong> could reveal system structure more clearly and enable RESTful patterns that many developers recognize.</p>
-    <p id="takeaway-2"><strong>2. Structured Frameworks May Aid Pre-Implementation Planning</strong></p>
-    <p>Utilizing MECE to identify probable problems, Prioritization matrices to evaluate options, and SMART to set goals could potentially support structured thinking. These frameworks might serve as diagnostic tools that help avoid building solutions that don't address the core problem. The MECE → Matrix → SMART approach could potentially apply to database schema design, error handling patterns, and project planning. Learning the methodology once may enable broader application.</p>
-    <p id="takeaway-3"><strong>3. Centralizing Cross-Cutting Concerns May Be Beneficial</strong></p>
-    <p>Cross-cutting concerns like security, logging, and validation could potentially exist in a single location. Middleware patterns may enable this centralization. When extracting repeated logic into middleware, changes might propagate more consistently. One security update could potentially protect every route rather than requiring individual modifications.</p>
-    <p id="takeaway-4"><strong>4. Structural Constraints May Be More Reliable</strong></p>
-    <p>One possible approach to security is incorporating it into design rather than relying on developer memory. Systems that depend on developers "not forgetting" security checks might be more prone to errors. Making security automatic through architectural choices like middleware pipelines could be one solution to this challenge.</p>
-    <p id="takeaway-5"><strong>5. Visible Relationships May Aid Understanding</strong></p>
-    <p>API structure could potentially reflect domain relationships more explicitly. Nested resources may make connections clearer. When URL structure mirrors the data model, developers might be able to infer endpoints more readily. On perusal of the structure, <strong>/listings/:id/reviews</strong> potentially communicates relationships more clearly than <strong>/getReviewsForListing</strong>.</p>
-  </div>
+<div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 30px 0;">
+  <p><strong>Key Learning and Takeaways</strong></p>
+  <ul style="line-height: 1.8;">
+    <li><strong>Resource-based design over action-based:</strong> Organizing around resources (DELETE /books/:id) creates more predictable, RESTful interfaces than action-based routes (/deleteBook).</li>
+    <li><strong>Structured frameworks drive better planning:</strong> Using MECE, Prioritization Matrix, and SMART before coding helps identify problems early and avoid reactive fixes.</li>
+    <li><strong>Centralize cross-cutting concerns:</strong> Middleware patterns for security, logging, and validation ensure consistency and reduce duplication across routes.</li>
+    <li><strong>Make security structural, not optional:</strong> Building authorization into the architecture (middleware pipelines) is more reliable than depending on developer memory.</li>
+    <li><strong>Visible relationships improve understanding:</strong> Nested routes like /listings/:id/reviews make domain relationships explicit and self-documenting.</li>
+  </ul>
 </div>
 
 
@@ -806,16 +789,16 @@ This learning experience began with exploring challenges in API route organizati
 
 <div style="padding: 20px; background: #fff3cd; border-radius: 8px; margin: 20px 0; color: #856404;">
 <p><strong style="color: #856404;">About the Author</strong></p>
-<p style="color: #856404;">I'm Harman Singh Sandhu, a first-year dual-degree student pursuing BTech in Computer Science at JIIT Noida and BS in Data Science at IIT Madras. As a McKinsey Forward Program alumnus, I apply structured strategic frameworks to solve complex system design problems, combining engineering fundamentals with data intelligence.</p>
+<p style="color: #856404;"><b>I'm Harman Singh Sandhu, a first-year dual-degree student pursuing BTech in Computer Science at JIIT Noida and BS in Data Science at IIT Madras. As a McKinsey Forward Program alumnus, I apply structured strategic frameworks to solve complex system design problems, combining engineering fundamentals with data intelligence.</b></p>
 <ul style="color: #856404;">
-<li><p style="color: #856404;">LinkedIn: <a href="https://www.linkedin.com/in/harman-sandhu-713852367" style="color: #3498db;">https://www.linkedin.com/in/harman-sandhu-713852367</a></p></li>
-<li><p style="color: #856404;">Email: <a href="mailto:harman2504sandhu@gmail.com" style="color: #3498db;">harman2504sandhu@gmail.com</a></p></li>
-<li><p style="color: #856404;">Project: Ace Rentals (GitHub: <a href="https://github.com/Ace-2504/Ace-Rentals" style="color: #3498db;">https://github.com/Ace-2504/Ace-Rentals</a>)</p></li>
+<li><p style="color: #856404;"><b>LinkedIn:</b> <a href="https://www.linkedin.com/in/harman-sandhu-713852367" style="color: #3498db;">https://www.linkedin.com/in/harman-sandhu-713852367</a></p></li>
+<li><p style="color: #856404;"><b>Email:</b> <a href="mailto:harman2504sandhu@gmail.com" style="color: #3498db;">harman2504sandhu@gmail.com</a></p></li>
+<li><p style="color: #856404;"><b>Project: Ace Rentals (GitHub:</b> <a href="https://github.com/Ace-2504/Ace-Rentals" style="color: #3498db;">https://github.com/Ace-2504/Ace-Rentals</a><b>)</b></p></li>
 </ul>
 </div>
 <div style="padding: 20px; background: #fff3cd; border-radius: 8px; margin: 20px 0; color: #856404;">
 <p><strong style="color: #856404;">Disclaimer</strong></p>
-<p style="color: #856404;">This article was developed with AI assistance for editing, structuring, and visual design. However, the core technical problem, the code implementation, and insights are entirely based on my personal learning and experience while building my project, Ace Rentals. The problem-solving frameworks (MECE, Prioritization Matrix, SMART) are the part of my learning on graduating from the McKinsey Forward Program.</p>
+<p style="color: #856404;"><b>This article was developed with AI assistance for editing, structuring, and visual design. However, the core technical problem, the code implementation, and insights are entirely based on my personal learning and experience while building my project, Ace Rentals. The problem-solving frameworks (MECE, Prioritization Matrix, SMART) are the part of my learning on graduating from the McKinsey Forward Program.</b></p>
 </div>
 
         </div>
