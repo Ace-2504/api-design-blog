@@ -378,8 +378,8 @@ hr {
 </head>
 <body>
         <div class="container">
-<h2 style="text-align: center; border-bottom: none; margin-bottom: 8px;">How Structured Thinking Fixed My API Design</h2>
-<p style="text-align: center; margin-bottom: 8px;">Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</p>
+<h2 style="text-align: center; border-bottom: none; margin-bottom: 8px;">How Structured Thinking Transformed My API Design</h2>
+<p style="text-align: center; margin-bottom: 8px;"><strong>Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</strong></p>
 <hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
 <h3>Introduction</h3>
 <p>While building Ace Rentals, a listings and reviews API, authorization initially evolved organically alongside feature development. As new capabilities such as deleting listings and reviews were introduced, it became necessary to ensure that users could only modify or remove resources they owned.
@@ -582,7 +582,6 @@ router.delete('/reviews/:id', (req, res) =&gt; {
 <p>All five criteria were achieved. This framework kept me focused on
 what actually mattered.</p>
 <p>With SMART goals defined, the redesign followed a clear roadmap rather than ad-hoc refactoring. Centralizing authorization through middleware provided focus, measurable criteria set objective success markers, and a two-week timeline maintained execution discipline. Using standard Express middleware ensured the solution remained practical and implementable.</p>
-<p><strong>How Frameworks Work Together</strong></p>
 
 <div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 20px 0;">
   <p><strong>How Frameworks Work Together</strong></p>
@@ -594,8 +593,8 @@ what actually mattered.</p>
 <h3>Implementation Impact</h3>
 <p>With the problem diagnosed through MECE analysis, the optimal solution identified via the Prioritization matrix, and planning through SMART goals, it was time to execute. The frameworks had provided clarity—now came the implementation. This phase required translating strategic insights into architectural changes that would eliminate code duplication and centralize authorization logic.</p>
 <p><strong>The Redesign: Action-Based to Resource-Based</strong></p>
-<!-- <p>Armed with a clear MECE breakdown and concrete SMART goals, I was ready to implement the solution. This simple architectural shift changed everything.</p>
-<p><strong>Comparing the Two Structures</strong></p> -->
+<p>The restructured approach allows HTTP methods to carry the action while URLs carry the resource. On perusal of the table below, one can observe how this structure potentially makes the API more predictable and self-documenting.</p>
+
 <table>
 <colgroup>
 <col style="width: 15%" />
@@ -650,7 +649,6 @@ what actually mattered.</p>
 </tr>
 </tbody>
 </table>
-<p>The restructured approach allows HTTP methods to carry the action while URLs carry the resource. On perusal of the table below, one can observe how this structure potentially makes the API more predictable and self-documenting.</p>
 <div style="display: flex; gap: 30px; margin: 30px 0;">
   <!-- LEFT COLUMN: Image + Caption -->
   <div style="flex: 0 0 55%;">
