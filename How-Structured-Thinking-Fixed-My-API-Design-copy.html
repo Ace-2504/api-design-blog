@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta property="og:image" content="https://ace-2504.github.io/api-design-blog/blogapithumbnail.png" />
+  <title>How Structured Thinking Fixed My API Design</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    color: #333;
+    background: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px;
+    background: white;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    line-height: 1.2;
+    text-align: left;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: #34495e;
+    text-align: left;
+}
+
+p {
+    margin-bottom: 10px;
+    text-align: justify;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+strong {
+    color: #2c3e50;
+}
+
+em {
+    color: #555;
+    font-style: italic;
+    display: inline-block;
+    background: #ecf0f1;
+    border-left: 3px solid #3498db;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: 0.95rem;
+}
+
+.emphasis-block {
+    background: #ecf0f1;
+    padding: 10px;
+    border-left: 3px solid #3498db;
+    margin: 12px 0;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+code {
+    background: #f4f4f4;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+    font-size: 0.85rem;
+}
+
+img {
+    display: block;
+    margin: 15px auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+pre {
+    background: #2c3e50;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 12px 0;
+    text-align: left;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+pre, pre code {
+    text-align: left;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    color: #ffffff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 0.9rem;
+}
+
+table th {
+    background: #3498db;
+    color: white;
+    padding: 10px 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+table td {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+table tr:hover {
+    background: #ecf0f1;
+}
+
+ul, ol {
+    margin: 10px 0;
+    text-align: left;
+    padding-left: 25px;
+}
+
+li {
+    margin: 4px 0;
+    text-align: left;
+    list-style-type: disc;
+}
+
+ol li {
+    list-style-type: decimal;
+}
+
+li ul, li ol {
+    margin-top: 4px;
+    padding-left: 25px;
+    text-align: left;
+}
+
+li ul li {
+    list-style-type: circle;
+}
+
+li p {
+    text-align: left;
+    margin: 2px 0;
+}
+
+.author-section {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.author-section p {
+    margin: 6px 0;
+}
+
+.author-section a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.author-section a:hover {
+    text-decoration: underline;
+}
+
+.disclaimer {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #856404;
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background: #3498db;
+    margin: 25px 0;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    .container {
+        padding: 15px 10px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+        margin-top: 12px;
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    /* Make flex layouts stack vertically */
+    div[style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    /* Adjust table for mobile */
+    table {
+        font-size: 0.8rem;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table th, table td {
+        padding: 6px 4px;
+        font-size: 0.75rem;
+    }
+
+    /* Code blocks */
+    pre {
+        font-size: 0.7rem;
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+    code {
+        font-size: 0.75rem;
+    }
+
+    /* Images */
+    img {
+        margin: 10px auto;
+    }
+
+    /* Gray boxes and callouts */
+    div[style*="padding: 20px"] {
+        padding: 12px !important;
+        margin: 15px 0 !important;
+    }
+
+    div[style*="padding: 12px"] {
+        padding: 10px !important;
+    }
+
+    /* Emphasis blocks */
+    .emphasis-block {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    em {
+        font-size: 0.85rem;
+        padding: 2px 4px;
+    }
+
+    /* Author and disclaimer sections */
+    .author-section, .disclaimer {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Lists */
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    li {
+        font-size: 0.9rem;
+    }
+
+    /* HR lines */
+    hr {
+        margin: 15px 0;
+    }
+
+    /* Reduce margins on styled divs */
+    div[style*="margin: 20px 0"] {
+        margin: 12px 0 !important;
+    }
+
+    div[style*="margin: 30px 0"] {
+        margin: 15px 0 !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    table {
+        font-size: 0.7rem;
+    }
+
+    table th, table td {
+        padding: 4px 2px;
+        font-size: 0.7rem;
+    }
+
+    pre {
+        font-size: 0.65rem;
+        padding: 8px;
+    }
+}
+    </style>
+</head>
+<body>
+        <div class="container">
+<h2 style="text-align: center; border-bottom: none; margin-bottom: 8px;">How Structured Thinking Fixed My API Design</h2>
+<p style="text-align: center; margin-bottom: 8px;">Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</p>
+<hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
+<h3>Introduction</h3>
+<p>While building Ace Rentals, a listings and reviews API, authorization initially evolved organically alongside feature development. As new capabilities such as deleting listings and reviews were introduced, it became necessary to ensure that users could only modify or remove resources they owned.
+</p>
+<p>What began as straightforward ownership checks gradually revealed deeper architectural issues. This article describes how applying structured thinking transformed scattered authorization logic into a centralized, middleware-driven design that improved security, maintainability, and scalability.</p>
+<p><strong>The Authorization Challenge</strong></p>
+<p>In the early iterations of the Ace Rentals API, authorization checks were implemented directly inside route handlers. Each route independently verified whether a user was authenticated and whether they owned the target resource.
+</p>
+<p>This change reinforced the DRY principle and resulted in a cleaner, more self-documenting API structure where resource relationships and access rules were easier to infer from the routing design itself.</p>
+<p>Upon examination of the code structure, one can observe how both routes perform identical ownership verification logic—checking if the logged-in user's ID matches the resource creator's ID before allowing deletion:</p>
+<pre style="position: relative;"><code>// Delete Listing Route
+router.delete('/listings/:id', (req, res) =&gt; {
+  Listing.findById(req.params.id, (err, listing) =&gt; {
+    <span style="background: #fff3cd; color: #856404; padding: 2px 4px; border-radius: 3px; font-weight: 600;">// ⚠️ SECURITY CHECK - Must be manually added to every route</span>
+    if (listing.creator.toString() !== req.user._id.toString()) {
+      return res.status(403).send("Unauthorized");
+    }
+    <span style="background: #f8d7da; color: #721c24; padding: 2px 4px; border-radius: 3px; font-weight: 600;">// ⚠️ Problem: If I forget this check, users can delete ANY listing</span>
+    listing.deleteOne();
+    res.redirect('/listings');
+  });
+});
+
+// Delete Review Route - IDENTICAL LOGIC (Copy-Pasted Security Check)
+router.delete('/reviews/:id', (req, res) =&gt; {
+  Review.findById(req.params.id, (err, review) =&gt; {
+    <span style="background: #fff3cd; color: #856404; padding: 2px 4px; border-radius: 3px; font-weight: 600;">// ⚠️ SAME SECURITY CHECK - Duplicated code, different variable names</span>
+    if (review.author.toString() !== req.user._id.toString()) {
+      return res.status(403).send("Unauthorized");
+    }
+    <span style="background: #f8d7da; color: #721c24; padding: 2px 4px; border-radius: 3px; font-weight: 600;">// ⚠️ Problem: If I forget this check, users can delete ANY review</span>
+    review.deleteOne();
+    res.redirect('/');
+  });
+});
+</code></pre>
+<p>By looking at the code, you can see the steps it follows: fetch the resource, compare IDs, return 403 if unauthorized, and proceed if authorized. Both routes appeared to have the identical logic, with the probable difference being the variable names (<strong>listing.creator</strong> vs <strong>review.author</strong>). This check was scattered throughout the codebase, which meant it needed to be remembered and added manually each time a new route was created. If forgotten even once, a user could potentially delete something they shouldn't be able to—representing a probable security vulnerability.</p>
+<p>Another observed challenge was that someone examining the code structure might not readily discern that reviews belong to listings. That relationship existed primarily in the database schema; the API structure did not explicitly reveal it.</p>
+<p>In light of the above observations, the following probable issues were identified:</p>
+<ul>
+<li><strong>Issue 1:</strong> Duplicated logic could potentially increase maintenance effort and reduce consistency.</li>
+<li><strong>Issue 2:</strong> Authorization coverage appeared to depend on manual repetition, which may increase the risk of missed checks.</li>
+</ul>
+<div style="display: flex; gap: 30px; margin: 30px 0;">
+  <!-- LEFT COLUMN: Image + Caption -->
+...existing code...
