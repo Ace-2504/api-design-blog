@@ -382,7 +382,7 @@ hr {
 <p style="text-align: center; margin-bottom: 8px;"><strong>Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</strong></p>
 <hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
 <h3>Introduction</h3>
-<p>While building Ace Rentals, a listings and reviews API, authorization logic evolved gradually alongside new features. As actions like deleting listings and reviews were added, it became necessary to ensure that users could only modify or remove resources they owned.
+<p>While building Ace Rentals, a listings and reviews website, authorization logic evolved gradually alongside new features. As actions like deleting listings and reviews were added, it became necessary to ensure that users could only modify or remove resources they owned.
 </p>
 <p>What started as simple ownership checks eventually exposed deeper design concerns. This article reflects on how applying structured thinking helped me move from scattered authorization logic to a centralized, middleware-based approach, improving clarity, maintainability, and confidence in the system as it grew.</p>
 <p><strong>The Authorization Challenge</strong></p>
@@ -391,6 +391,8 @@ hr {
 <p>While this approach worked functionally, it resulted in repeated authorization logic scattered across the codebase. Any route that allowed deletion or modification had to manually include the same ownership check, increasing the risk of inconsistency and oversight as the system evolved.
 </p>
 <p>The turning point came when I added a new endpoint and realized — almost as an afterthought — that I needed to repeat the same ownership check yet again. For a moment, it wasn’t clear whether I had already enforced it elsewhere or had simply assumed it was covered. Nothing broke, but that uncertainty itself was the problem. The system still worked, yet it was becoming increasingly difficult to trust.</p>
+<p>At this point, I had to work within a few clear constraints. The API was already functional, so the solution needed to avoid breaking existing routes or changing how clients interacted with the system. Rewriting large parts of the application or introducing additional services would have added complexity without solving the underlying problem. Given these constraints, the focus was on improving how authorization rules were structured within the existing Express setup rather than redesigning the system entirely.</p>
+
 <p><strong>Observing the Problem in Code</strong></p>
 <p>A closer examination of the code structure reveals that both deletion routes perform identical ownership verification logic: the resource is fetched, the creator’s identifier is compared against the logged-in user’s identifier, a forbidden response is returned if the check fails, and execution proceeds only if authorization succeeds.</p>
 <pre style="position: relative;"><code>// Delete Listing Route
@@ -710,8 +712,7 @@ Extracting this logic into a single middleware function addressed both concerns 
 </div>
 
 <p><strong>Measuring the Transformation</strong></p>
-
-<p>The middleware pattern sounds elegant in theory, but what concrete improvements does it deliver? Moving from scattered authorization checks to centralized middleware created measurable changes across multiple dimensions—from lines of code to developer experience. The table below breaks down exactly what shifted in the codebase, quantifying the benefits that the MECE framework, the Prioritization Matrix and the SMART framework predicted.</p>
+<p>The middleware pattern sounds elegant in theory, but what concrete improvements does it deliver in practice? Moving from scattered authorization checks to centralized middleware led to clear, observable changes across the codebase—from how many places required review to how confident it felt to add new features. The table below summarizes what shifted and why it mattered.</p>
 
 <table style="width:100%;">
 <colgroup>
