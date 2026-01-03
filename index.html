@@ -382,14 +382,15 @@ hr {
 <p style="text-align: center; margin-bottom: 8px;"><strong>Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</strong></p>
 <hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
 <h3>Introduction</h3>
-<p>While building Ace Rentals, a listings and reviews API, authorization initially evolved organically alongside feature development. As new capabilities such as deleting listings and reviews were introduced, it became necessary to ensure that users could only modify or remove resources they owned.
+<p>While building Ace Rentals, a listings and reviews API, authorization logic evolved gradually alongside new features. As actions like deleting listings and reviews were added, it became necessary to ensure that users could only modify or remove resources they owned.
 </p>
-<p>What began as straightforward ownership checks gradually revealed deeper architectural issues. This article describes how applying structured thinking transformed scattered authorization logic into a centralized, middleware-driven design that improved security, maintainability, and scalability.</p>
+<p>What started as simple ownership checks eventually exposed deeper design concerns. This article reflects on how applying structured thinking helped me move from scattered authorization logic to a centralized, middleware-based approach, improving clarity, maintainability, and confidence in the system as it grew.</p>
 <p><strong>The Authorization Challenge</strong></p>
 <p>In the early iterations of the Ace Rentals API, authorization checks were implemented directly within route handlers. Each route was responsible for independently verifying whether a user was authenticated and whether they owned the target resource.
 </p>
 <p>While this approach worked functionally, it resulted in repeated authorization logic scattered across the codebase. Any route that allowed deletion or modification had to manually include the same ownership check, increasing the risk of inconsistency and oversight as the system evolved.
 </p>
+<p>The turning point came when I added a new endpoint and realized — almost as an afterthought — that I needed to repeat the same ownership check yet again. For a moment, it wasn’t clear whether I had already enforced it elsewhere or had simply assumed it was covered. Nothing broke, but that uncertainty itself was the problem. The system still worked, yet it was becoming increasingly difficult to trust.</p>
 <p><strong>Observing the Problem in Code</strong></p>
 <p>A closer examination of the code structure reveals that both deletion routes perform identical ownership verification logic: the resource is fetched, the creator’s identifier is compared against the logged-in user’s identifier, a forbidden response is returned if the check fails, and execution proceeds only if authorization succeeds.</p>
 <pre style="position: relative;"><code>// Delete Listing Route
@@ -768,10 +769,14 @@ Extracting this logic into a single middleware function addressed both concerns 
 <p><strong>Reflecting on the Journey</strong></p>
 
 <p>
-This learning experience began with exploring challenges in API route organization and authorization logic placement. The transformation focused on centralizing authorization from duplicated checks into a single middleware function, simplifying route handlers and shifting security from a procedural approach to a more structural one. As a result, the API structure became more self-documenting, with URLs clearly reflecting how resources relate without requiring extensive external documentation.
+    This refactor wasn’t triggered by a bug or a performance issue. It came from a growing feeling that the system was becoming harder to work with as it changed. When authorization logic was repeated across multiple routes, I had to rely on memory to ensure correctness, which made the design feel fragile over time.
 </p>
 
-<p>The probable value extends beyond cleaner code—it represents learning a problem-solving methodology that could potentially transfer to other technical challenges. When facing complexity or uncertainty about where to start, structured frameworks may help transform vague concerns into concrete, actionable steps.</p>
+<p>Moving authorization into a centralized middleware didn’t just reduce duplication—it made the rules of the system easier to see and reason about. Once those rules lived in a single place, adding or modifying features felt more predictable and less error-prone.
+</p>
+<p>As a student, the main lesson for me is that design problems often appear before anything actually breaks. Repeated logic, uncertainty, and small moments of hesitation can signal deeper structural issues. Learning to notice and act on these signals early has been an important step in how I now think about backend design.</p>
+
+
 
 <div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 30px 0;">
   <p><strong>Key Learning and Takeaways</strong></p>
