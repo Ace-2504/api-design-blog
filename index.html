@@ -382,12 +382,42 @@ hr {
 <p style="text-align: center; margin-bottom: 8px;"><strong>Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</strong></p>
 <hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
 <h3>Executive Summary</h3>
-<p>While building the backend for Ace Rentals, I noticed that authorization logic had slowly become scattered across many API routes. The system worked, but every protected route had its own ownership checks, which meant the same logic was being repeated again and again. As the project grew, this made the code harder to maintain and increased the risk that a route could accidentally miss an authorization check.</p>
-<p>The core issue wasn’t a bug in the code—it was how authorization was structured. Access control depended on developers remembering to add checks in every route, instead of being enforced by the system itself. That approach doesn’t scale well and becomes fragile as more features and routes are added.</p>
-<p>At the same time, the API was already in use, so a full rewrite wasn’t realistic. The solution needed to work within the existing Express setup, avoid breaking current behavior, and keep changes focused on improving how authorization rules were organized rather than redesigning the entire system.</p>
-<p>To move forward, I stepped back and analyzed the problem before writing more code. This helped clarify that authorization is a rule that applies across many routes and features and should be handled in one shared place instead of being repeated everywhere. I compared different ways of structuring the solution and set clear goals to keep the refactor practical and contained.</p>
-<p>The final decision was to centralize authorization logic into middleware. Ownership checks were removed from individual routes and enforced consistently before any business logic runs. Routes were also restructured around resources, which made the API clearer and allowed authorization rules to fit naturally into the request flow.</p>
-<p>As a result, duplicated logic was eliminated, route handlers became simpler, and authorization enforcement became predictable by default. More importantly, access control shifted from something developers had to remember to something the architecture guarantees. This change made the system easier to maintain, safer to extend, and better prepared to scale.</p>
+
+<p>
+  While developing the backend for Ace Rentals, an architectural weakness was
+  identified in how authorization was enforced. Authorization checks were
+  duplicated across individual API routes, increasing maintenance overhead and
+  introducing the risk of inconsistent access control as the system scaled.
+</p>
+
+<p>
+  The issue was structural rather than functional. Authorization relied on
+  developers manually adding checks in each route instead of being enforced
+  consistently by the architecture. This approach does not scale and increases
+  fragility as the number of routes and features grows.
+</p>
+
+<p>
+  Given that the API was already in active use, a full redesign was not viable.
+  The solution needed to operate within the existing Express framework, preserve
+  current behavior, and focus narrowly on improving authorization structure.
+</p>
+
+<p>
+  To address this, authorization logic was centralized into middleware and routes
+  were reorganized around resources. Ownership checks now execute consistently
+  before any business logic, shifting access control from an implementation
+  detail to an architectural guarantee.
+</p>
+
+<p>
+  This change eliminated duplicated logic, simplified route handlers, and made
+  authorization predictable by default. A subsequent qualitative risk
+  assessment confirmed that core business logic is stable, while remaining risks
+  are primarily structural and related to shared authorization and setup. These
+  insights will guide further architectural exploration, which will be
+  evaluated and documented in a follow-up post.
+</p>
 
 <p style="padding: 15px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 4px; margin: 15px 0;"><strong>Key takeaways:</strong> Problems that show up repeatedly in code are often design issues, not implementation mistakes. Rules like authorization that apply across many routes should be enforced in one shared place rather than copied everywhere. Good system design reduces the chance of human error and makes growth easier to manage.</p>
 
@@ -867,6 +897,163 @@ By transforming authorization into an architectural control rather than a repeat
 <div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
     <p><strong>Key Transformation:</strong> Authorization was moved out of individual route handlers and into a single middleware. This eliminated repeated security checks and ensured that every protected route is evaluated consistently. In parallel, the API was restructured so that URL paths clearly express how resources relate to one another, rather than relying on implicit database relationships. Together, these changes show how structured thinking was translated into a concrete, enforceable design in code.</p>
 </div>
+<br>
+<hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
+<h3>Risk Assessment</h3>
+
+<p>Following the measurement of the architectural transformation in my personal project, Ace Rentals, I evaluated the current design to understand not only what improved, but also where risk remains concentrated. The intent is to make architectural trade-offs explicit and use them as a structured learning aid for future design decisions.
+</p>
+<p>The current approach centralizes authorization to improve consistency and reduce duplication. While this has simplified implementation, it also concentrates responsibility into shared logic and introduces specific structural risks worth examining.
+</p>
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <colgroup>
+      <col style="width:18%; min-width:90px; max-width:180px;" />
+      <col style="width:18%; min-width:90px; max-width:180px;" />
+      <col style="width:13%; min-width:80px; max-width:140px;" />
+      <col style="width:13%; min-width:80px; max-width:140px;" />
+      <col style="width:13%; min-width:80px; max-width:140px;" />
+      <col />
+    </colgroup>
+  <thead>
+    <tr style="background-color:#f4f6f8; text-align:left;">
+      <th style="text-align:left !important;">Risk Area</th>
+      <th style="text-align:left !important;">Logic Type</th>
+      <th style="text-align:left !important;">L</th>
+      <th style="text-align:left !important;">I</th>
+      <th style="text-align:left !important;">Risk Score (L × I)</th>
+      <th style="text-align:left !important;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left !important;">Business rules incorrect or unstable</td>
+      <td style="text-align:left !important;">Business logic</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">Core domain logic is stable</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Domain invariants violated</td>
+      <td style="text-align:left !important;">Business logic</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">0</td>
+      <td style="text-align:left !important;">No business-rule risk observed</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Centralized authorization failure</td>
+      <td style="text-align:left !important;">Shared authorization logic</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">3</td>
+      <td style="text-align:left !important;">6</td>
+      <td style="text-align:left !important;">High impact due to centralized control</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Overgeneralized authorization logic</td>
+      <td style="text-align:left !important;">Shared authorization logic</td>
+      <td style="text-align:left !important;">3</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">6</td>
+      <td style="text-align:left !important;">Likely complexity as system grows</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Missing middleware on new routes</td>
+      <td style="text-align:left !important;">Setup / configuration logic</td>
+      <td style="text-align:left !important;">1</td>
+      <td style="text-align:left !important;">3</td>
+      <td style="text-align:left !important;">3</td>
+      <td style="text-align:left !important;">Rare but high-impact edge case</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Request structure dependency</td>
+      <td style="text-align:left !important;">Technical infrastructure logic</td>
+      <td style="text-align:left !important;">1</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">Low-frequency coupling risk</td>
+    </tr>
+    <tr>
+      <td style="text-align:left !important;">Debugging complexity</td>
+      <td style="text-align:left !important;">Operational logic</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">1</td>
+      <td style="text-align:left !important;">2</td>
+      <td style="text-align:left !important;">Manageable operational overhead</td>
+    </tr>
+    <tr style="font-weight:bold; background-color:#eef2f6;">
+      <td style="text-align:left !important;">TOTAL RISK SCORE</td>
+      <td style="text-align:left !important;">—</td>
+      <td style="text-align:left !important;">—</td>
+      <td style="text-align:left !important;">—</td>
+      <td style="text-align:left !important;">19</td>
+      <td style="text-align:left !important;">Project Grade: B</td>
+    </tr>
+  </tbody>
+</table>
+<em style="text-align: left; padding: 10px;"><strong>Caveat:</strong> This assessment is qualitative, not statistical; likelihood and impact are ordinal estimates based on code inspection and development experience, intended for relative comparison rather than precise risk prediction.</em>
+<p style="margin-top: 10px;"><strong>Scoring Reference (Applied Above)</strong></p>
+
+
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; margin-bottom: 18px;">
+  <thead>
+    <tr style="background-color:#f4f6f8;">
+      <th style="text-align:left;">Likelihood (L)</th>
+      <th style="text-align:left;">Impact (I)</th>
+      <th style="text-align:left;">Project Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;"><strong>0</strong> = No observed risk</td>
+      <td style="text-align:left;"><strong>0</strong> = No impact</td>
+      <td style="text-align:left;"><strong>A</strong> = 0–10 (Low-risk, well-contained)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><strong>1</strong> = Rare / edge-case</td>
+      <td style="text-align:left;"><strong>1</strong> = Limited, easy recovery</td>
+      <td style="text-align:left;"><strong>B</strong> = 11–20 (Moderate, manageable architectural risk)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><strong>2</strong> = Possible during normal development</td>
+      <td style="text-align:left;"><strong>2</strong> = Partial system impact</td>
+      <td style="text-align:left;"><strong>C</strong> = 21–30 (Elevated structural risk)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><strong>3</strong> = Likely as system evolves</td>
+      <td style="text-align:left;"><strong>3</strong> = Broad impact (including security or data)</td>
+      <td style="text-align:left;"><strong>D</strong> &gt; 30 (Fragile design)</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+ <p><strong>Reflection and Forward Direction</strong></p>
+
+    <p>
+    This assessment shows that no risk currently originates from business logic.
+    All identified risks are structural in nature, primarily related to how
+    authorization, setup, and shared responsibilities are handled.
+  </p>
+
+  <p>
+    As part of my continued learning, I will study alternative architectural
+    approaches—such as modular monolith, layered architecture, domain-driven
+    modularization, and policy-based authorization—and evaluate how each
+    redistributes the current risk profile. I plan to refactor Ace Rentals using
+    the selected approach and share the resulting learnings and trade-offs in a
+    follow-up blog.
+  </p>
+
+  <div style="padding: 10px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
+
+<p><strong>Key Insight:</strong> All identified risk in Ace Rentals resides in shared and structural logic rather than business logic, indicating that future improvements should focus on architectural structure rather than domain behavior.</p>
+</div>
+
+
 
 <hr style="border: none; height: 2px; background: #3498db; margin: 20px 0;">
 
@@ -883,14 +1070,37 @@ By transforming authorization into an architectural control rather than a repeat
 
 
 <div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 30px 0;">
-  <p><strong>Key Learnings from Applying Structured Thinking</strong></p>
-  <ul style="line-height: 1.8;">
-    <li><strong>Resource-based design over action-based:</strong> Organizing around resources (DELETE /books/:id) creates more predictable, RESTful interfaces than action-based routes (/deleteBook).</li>
-    <li><strong>Structured frameworks drive better planning:</strong> Using MECE, Prioritization Matrix, and SMART before coding helps identify problems early and avoid reactive fixes.</li>
-    <li><strong>Centralize cross-cutting concerns:</strong> Middleware patterns for security, logging, and validation ensure consistency and reduce duplication across routes.</li>
-    <li><strong>Make security structural, not optional:</strong> Building authorization into the architecture (middleware pipelines) is more reliable than depending on developer memory.</li>
-    <li><strong>Visible relationships improve understanding:</strong> Nested routes like /listings/:id/reviews make domain relationships explicit and self-documenting.</li>
+  <p><strong>Key Learnings</strong></p>
+
+  <ul>
+    <li>
+      <strong>Design around resources, not actions:</strong>
+      Resource-based routes create predictable APIs and make authorization
+      boundaries easier to reason about than action-based endpoints.
+    </li>
+    <li>
+      <strong>Use structure before writing code:</strong>
+      Applying MECE, prioritization matrices, and SMART goals early helped
+      surface structural issues upfront and reduced rework later.
+    </li>
+    <li>
+      <strong>Centralization requires intent:</strong>
+      Shared middleware improves consistency and reduces duplication, but it
+      also concentrates responsibility and must be designed deliberately.
+    </li>
+    <li>
+      <strong>Make security structural:</strong>
+      Enforcing authorization through the request pipeline is more reliable
+      than relying on developers to remember checks.
+    </li>
+    <li>
+      <strong>Clear structure exposes risk:</strong>
+      Explicit route relationships (such as nested resources) improve domain
+      clarity and make authorization scope and residual risk easier to
+      identify.
+    </li>
   </ul>
+
 </div>
 
 </div>
