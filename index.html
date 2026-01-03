@@ -491,7 +491,7 @@ router.delete('/reviews/:id', (req, res) =&gt; {
   </div>
 </div>
 
-<p>Breaking down each option, The table below summarizes how each architectural approach performs across the two evaluation criteria, along with the key trade-offs involved.</p>
+<p>Breaking down each option, the table below summarizes how each architectural approach performs across the two evaluation criteria, along with the key trade-offs involved.</p>
 <table>
 <colgroup>
 <col style="width: 29%" />
@@ -537,7 +537,64 @@ router.delete('/reviews/:id', (req, res) =&gt; {
 
 <p>The prioritization matrix made the path forward clear. Of the four quadrants analyzed, only resource-based routes with centralized middleware delivered both high code reusability and high maintainability. This analysis eliminated guesswork—the data pointed to one optimal solution. Now I needed to transform this strategic choice into actionable implementation steps.</p>
 <br>
-<p><strong style="text-align: left;">SMART Goals for Redesign</strong></p>
+<p><strong>SMART Goals for Redesign</strong></p>
+
+<p>
+After identifying the root cause and selecting the architectural direction, the remaining challenge was execution.
+I realized that without clear boundaries, even a well-reasoned refactor could easily expand beyond its original intent.
+Defining SMART goals helped me translate analysis into disciplined action and, more importantly, taught me how to
+control scope during implementation.
+</p>
+
+<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr>
+      <th>SMART Criteria</th>
+      <th>Implementation Target</th>
+      <th>Implementation Necessity</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Specific</strong></td>
+      <td style="text-align: left;">Centralize authorization into a single middleware</td>
+      <td style="text-align: left;">A single control point was necessary to avoid relying on memory when adding or modifying routes</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td><strong>Measurable</strong></td>
+      <td style="text-align: left;">Remove duplicated ownership checks from all protected routes</td>
+      <td style="text-align: left;">Provided a concrete way to verify that the refactor actually reduced authorization risk</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td><strong>Achievable</strong></td>
+      <td style="text-align: left;">Use existing Express middleware patterns</td>
+      <td style="text-align: left;">Kept the solution practical and understandable without introducing unnecessary complexity</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td><strong>Relevant</strong></td>
+      <td style="text-align: left;">Improve security and reduce authorization-related bugs</td>
+      <td style="text-align: left;">Directly addressed the core issue identified during earlier analysis</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td><strong>Time-Bound</strong></td>
+      <td style="text-align: left;">Complete the refactor within two weeks</td>
+      <td style="text-align: left;">Prevented scope creep and enforced focused, incremental changes</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+What I learned through this step was that SMART goals are less about planning and more about restraint.
+Explicitly stating why each constraint existed made it easier to stay focused during implementation and
+avoid turning a targeted refactor into a broader redesign.
+</p>
+<!-- <p><strong style="text-align: left;">SMART Goals for Redesign</strong></p>
 <p>The MECE framework had clearly diagnosed the problem—my authorization logic was scattered everywhere, creating both duplication and gaps. The prioritization matrix had identified the best path forward. Now I needed to turn this analysis into action with concrete, measurable targets.</p>
 <p>The goals I set out to achieve:</p>
 <table>
@@ -580,10 +637,10 @@ router.delete('/reviews/:id', (req, res) =&gt; {
 <td style="text-align: left;">✅</td>
 </tr>
 </tbody>
-</table>
-<p>All five criteria were achieved. This framework kept me focused on
+</table> -->
+<!-- <p>All five criteria were achieved. This framework kept me focused on
 what actually mattered.</p>
-<p>With SMART goals defined, the redesign followed a clear roadmap rather than ad-hoc refactoring. Centralizing authorization through middleware provided focus, measurable criteria set objective success markers, and a two-week timeline maintained execution discipline. Using standard Express middleware ensured the solution remained practical and implementable.</p>
+<p>With SMART goals defined, the redesign followed a clear roadmap rather than ad-hoc refactoring. Centralizing authorization through middleware provided focus, measurable criteria set objective success markers, and a two-week timeline maintained execution discipline. Using standard Express middleware ensured the solution remained practical and implementable.</p> -->
 
 <div style="padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px; margin: 20px 0;">
   <p><strong>How Frameworks Work Together</strong></p>
