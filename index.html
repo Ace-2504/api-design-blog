@@ -381,7 +381,21 @@ hr {
 <h2 style="text-align: center; border-bottom: none; margin-bottom: 8px;">How Structured Thinking Transformed REST API Design</h2>
 <p style="text-align: center; margin-bottom: 8px;"><strong>Harman Singh Sandhu | First-year BTech CSE at JIIT Noida | BS Data Science at IIT Madras</strong></p>
 <hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
+<h3>Executive Summary</h3>
+<p><strong>While building the backend for Ace Rentals, I noticed that authorization logic had slowly become scattered across many API routes.</strong> The system worked, but every protected route had its own ownership checks, which meant the same logic was being repeated again and again. As the project grew, this made the code harder to maintain and increased the risk that a route could accidentally miss an authorization check.</p>
+<p>The core issue wasn’t a bug in the code—it was how authorization was structured. Access control depended on developers remembering to add checks in every route, instead of being enforced by the system itself. That approach doesn’t scale well and becomes fragile as more features and routes are added.</p>
+<p>At the same time, the API was already in use, so a full rewrite wasn’t realistic. The solution needed to work within the existing Express setup, avoid breaking current behavior, and keep changes focused on improving how authorization rules were organized rather than redesigning the entire system.</p>
+<p>To move forward, I stepped back and analyzed the problem before writing more code. This helped clarify that authorization is a rule that applies across many routes and features and should be handled in one shared place instead of being repeated everywhere. I compared different ways of structuring the solution and set clear goals to keep the refactor practical and contained.</p>
+<p>The final decision was to centralize authorization logic into middleware. Ownership checks were removed from individual routes and enforced consistently before any business logic runs. Routes were also restructured around resources, which made the API clearer and allowed authorization rules to fit naturally into the request flow.</p>
+<p>As a result, duplicated logic was eliminated, route handlers became simpler, and authorization enforcement became predictable by default. More importantly, access control shifted from something developers had to remember to something the architecture guarantees. This change made the system easier to maintain, safer to extend, and better prepared to scale.</p>
+
+<p style="padding: 15px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 4px; margin: 15px 0;"><strong>Key takeaways:</strong> Problems that show up repeatedly in code are often design issues, not implementation mistakes. Rules like authorization that apply across many routes should be enforced in one shared place rather than copied everywhere. Good system design reduces the chance of human error and makes growth easier to manage.</p>
+
+<hr style="border: none; height: 2px; background: #3498db; margin: 0 0 12px 0;">
+
 <h3>Setting the Context: From Working Code to Structural Issues</h3>
+<p>Before diving into the redesign, it’s important to understand how the original structure evolved and why it became a problem.
+</p>
 <p>While building Ace Rentals, a listings and reviews website, authorization logic evolved gradually alongside new features. As actions like deleting listings and reviews were added, it became necessary to ensure that users could only modify or remove resources they owned.
 </p>
 <p>What started as simple ownership checks eventually exposed deeper design concerns. This article reflects on how applying structured thinking helped me move from scattered authorization logic to a centralized, middleware-based approach, improving clarity, maintainability, and confidence in the system as it grew.</p>
