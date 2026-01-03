@@ -461,7 +461,7 @@ router.delete('/reviews/:id', (req, res) =&gt; {
 <p>As a result, each new feature introduced unnecessary risk—every change relied on manual discipline and the assumption that no security check would be overlooked. This lack of structural enforcement made the system fragile and difficult to scale</p>
 <div style="display: flex; gap: 30px; margin: 30px 0;">
   <div style="flex: 0 0 55%;">
-<p><img role="img" src="mece.png" style="width:100%; height: 497.071px; border: 3px solid #3498db;" /></p>
+<p><img role="img" src="../prioritization matrix.png" style="width:100%; height: 497.071px; border: 3px solid #3498db;" /></p>
   </div>
   <div style="flex: 0 0 40%; padding: 20px; background: #e8eaed; border-left: 4px solid #3498db; border-radius: 8px;">
     <h3 style="margin-top: 0; color: #2c3e50;">🔍 Understanding the MECE Analysis</h3>
@@ -474,7 +474,7 @@ router.delete('/reviews/:id', (req, res) =&gt; {
 
 <p><strong>Prioritization Matrix Analysis</strong></p>
 <p>The MECE analysis revealed what was wrong with my approach, but I still had multiple potential solutions. I needed a structured way to choose the best long-term design. I used the Prioritization Matrix to evaluate each approach against key criteria and identify the optimal solution.</p>
-
+<p>Each option was evaluated using two primary criteria: code reusability and long-term maintainability.</p>
 <div style="display: flex; gap: 30px; align-items: flex-start;">
   <!-- LEFT COLUMN: Image + Caption -->
   <div style="flex: 0 0 55%;">
@@ -492,7 +492,7 @@ router.delete('/reviews/:id', (req, res) =&gt; {
   </div>
 </div>
 
-<p>Breaking down each option:</p>
+<p>Breaking down each option, The table below summarizes how each architectural approach performs across the two evaluation criteria, along with the key trade-offs involved.</p>
 <table>
 <colgroup>
 <col style="width: 29%" />
