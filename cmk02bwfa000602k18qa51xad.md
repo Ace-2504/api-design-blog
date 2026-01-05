@@ -7,8 +7,6 @@ tags: software-architecture, consulting, system-design, backend-development, api
 
 ---
 
-## Executive Summary
-
 While building the backend for **Ace Rentals**, I encountered a design issue that didn’t surface as runtime failures but gradually reduced confidence in the system. Authorization checks were implemented directly inside individual routes. Although functionally correct, this approach made security dependent on how carefully each route was written, which does not scale as systems evolve.
 
 As the number of endpoints increased, ownership checks had to be reimplemented repeatedly. This resulted in duplicated logic, higher maintenance effort, and the risk of missing an authorization check altogether. The underlying problem was not functional—it was structural. Authorization existed as an implementation detail rather than an architectural guarantee enforced by the system.
